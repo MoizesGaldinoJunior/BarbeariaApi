@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BarbeariaApi.Tests/BarbeariaApi.Tests.csproj" />
+  <Project Path="BarbeariaApi/BarbeariaApi.csproj" />
+</Solution>

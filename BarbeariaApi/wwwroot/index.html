@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Barbearia - Agendamentos</title>
+    
+    <style>
+        body {font-family: Arial, sans-serif; padding:20px; background-color:#f4f4f4;}
+        .card {background: white; padding:15px;margin-bottom:10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        button {background: #d9534f; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius:3px;}
+    </style>
+</head>
+<body>
+
+<h2> Agenda da Barbearia</h2>
+<div id="lista-agendamentos">Carregando horários...</div>
+
+<script>
+    //Essa é a função do nosso "GArçom". Ele vai até a rota GET buscar os dados.
+    async function buscarAgendamento(){
+        //O comando 'fetch' é o JavaScript batendo na porta do nosso guichê GET.
+        const resposta = await fetch('/agendamentos');
+        
+        //Aqui elle transforma a resposta em JSON
+        const agendamentos = await resposta.json();
+        
+        const divLista = document.getElementById('lista-agendamentos');
+        divLista.innerHTML = ''; //Limpa o aviso de "Caregando"
+        
+        // Regra de negócio: se a gaveta estiver vazia
+        if(agendamentos.length === 0){
+            divLista.innerHTML = '<p>Nenhum agendamento marcado.</p>';
+            return;
+        }
+        
+        //Para cada ficha no banco, ele cria um "Card" bonito na tela
+        agendamentos.forEach(agendamento => {
+            divLista.innerHTML += `
+                <div class="card">
+                    <strong>Cliente:</strong> ${agendamento.nomeCliente}<br>
+                    <strong>Serviço:</strong> ${agendamento.servico}<br>
+                    <strong>Data:</strong> ${new Date(agendamento.dataHora).toLocaleString()}<br>
+                </div>
+            `;
+        })
+    }
+    
+    //Manda o garçom trabalhar assim que a página abrir
+    
+    buscarAgendamento();
+</script>
+
+</body>
+</html>
